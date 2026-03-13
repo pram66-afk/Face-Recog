@@ -1,0 +1,8 @@
+{
+  "name": "AMS QR - VTU Attendance System",
+  "description": "A responsive attendance management system using QR Code and GPS verification with 85% attendance alerts.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}

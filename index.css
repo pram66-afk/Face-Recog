@@ -1,0 +1,512 @@
+/* ============================================
+   AMS QR — Candymorphism Design System
+   Super-soft, glossy, and professional
+   ============================================ */
+
+/* ---------- CSS Variables ---------- */
+:root {
+  /* Professional Professional Candymorphism Palette (No Pink) */
+  --primary: #4361ee;
+  --primary-light: #4895ef;
+  --primary-dark: #3f37c9;
+  --accent: #7209b7;
+  --accent-light: #b5179e;
+  /* Purple-leaning, not pink */
+  --success: #4cc9f0;
+  --success-dark: #4361ee;
+  --warning: #f72585;
+  /* Vibrant but used sparingly as an accent */
+  --danger: #ef476f;
+
+  /* Candy Surfaces */
+  --surface-white: #ffffff;
+  --surface-light: #f8f9fa;
+  --candy-bg: #ffffff;
+  --candy-border: #ffffff;
+  --candy-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08), 0 2px 10px -2px rgba(0, 0, 0, 0.04);
+  --candy-inner: inset 0 2px 4px rgba(255, 255, 255, 1);
+
+  /* Radii - The "Soft" factor */
+  --radius-xs: 12px;
+  --radius-sm: 18px;
+  --radius: 28px;
+  --radius-lg: 40px;
+  --radius-pill: 9999px;
+
+  --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --soft-spring: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* View Transitions Support */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  animation: 0.4s cubic-bezier(0.4, 0, 0.2, 1) both fade-out;
+}
+
+::view-transition-new(root) {
+  animation: 0.6s cubic-bezier(0, 0, 0.2, 1) both fade-in-up;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.98);
+    filter: blur(10px);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(1.02);
+    filter: blur(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* ---------- Base ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background:
+    radial-gradient(at 0% 0%, rgba(67, 97, 238, 0.1) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(76, 201, 240, 0.1) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(114, 9, 183, 0.05) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(67, 97, 238, 0.1) 0px, transparent 50%),
+    #f8faff;
+  min-height: 100vh;
+  color: #2b2d42;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(67, 97, 238, 0.2);
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(67, 97, 238, 0.4);
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(67, 97, 238, 0.1);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(67, 97, 238, 0.3);
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* ---------- Candy Utilities ---------- */
+.gradient-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+}
+
+.gradient-success {
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+}
+
+.gradient-accent {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+}
+
+.candy-sidebar {
+  background: var(--surface-white);
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 10px 0 40px rgba(0, 0, 0, 0.02);
+}
+
+.gradient-dark {
+  /* Restoring a more candified dark version just in case, but sidebar will use candy-sidebar */
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+}
+
+.candy-card {
+  background: var(--surface-white);
+  border: 1px solid rgba(255, 255, 255, 1);
+  box-shadow:
+    0 10px 40px -10px rgba(0, 0, 0, 0.05),
+    0 2px 10px -2px rgba(0, 0, 0, 0.02),
+    inset 0 1px 2px rgba(255, 255, 255, 1);
+  border-radius: var(--radius);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.candy-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.candy-card:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow:
+    0 20px 50px -12px rgba(0, 0, 0, 0.06),
+    inset 0 1px 2px rgba(255, 255, 255, 1);
+  border-color: rgba(255, 255, 255, 1);
+}
+
+.candy-inner {
+  box-shadow: var(--candy-inner);
+}
+
+.candy-dark {
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* ---------- Buttons ---------- */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 10px 25px -5px rgba(67, 97, 238, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px -5px rgba(67, 97, 238, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  filter: brightness(1.1);
+}
+
+.btn-primary:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.btn-soft {
+  background: white;
+  color: var(--primary);
+  border: 1px solid var(--candy-border);
+  padding: 12px 24px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  transition: var(--transition);
+  box-shadow: var(--candy-shadow);
+}
+
+.btn-soft:hover {
+  background: var(--surface-light);
+  transform: scale(1.05);
+}
+
+/* ---------- Inputs ---------- */
+input,
+select,
+textarea {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  transition: var(--transition);
+  box-shadow:
+    var(--candy-shadow),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.02);
+  font-size: 1rem;
+  color: #1e293b;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  background: white;
+  border-color: var(--primary-light);
+  box-shadow:
+    0 15px 35px -10px rgba(67, 97, 238, 0.15),
+    0 0 0 4px rgba(67, 97, 238, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 1);
+  outline: none;
+  transform: translateY(-1px) scale(1.005);
+}
+
+/* ---------- Animations ---------- */
+@keyframes bop {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px) scale(1.02);
+  }
+}
+
+@keyframes rainbow-border {
+  0% {
+    border-color: var(--primary);
+  }
+
+  33% {
+    border-color: var(--success);
+  }
+
+  66% {
+    border-color: var(--accent);
+  }
+
+  100% {
+    border-color: var(--primary);
+  }
+}
+
+.animate-bop {
+  animation: bop 4s ease-in-out infinite;
+}
+
+/* Keep existing animations but soften them */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.9) translateY(20px);
+    opacity: 0;
+    filter: blur(10px);
+  }
+
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes squish {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.92, 0.95);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s var(--soft-spring) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s var(--soft-spring) forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.7s var(--spring) forwards;
+}
+
+.animate-slide-right {
+  animation: slideRight 0.5s var(--soft-spring) forwards;
+}
+
+.tap-squish:active {
+  animation: squish 0.3s var(--soft-spring);
+}
+
+.tab-indicator {
+  transition: all 0.4s var(--spring);
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Mobile Navigation Softening */
+.mobile-bottom-nav {
+  background: #ffffff;
+  border-radius: 40px 40px 0 0;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  border-bottom: none;
+}
+
+/* Badge Styling */
+.badge {
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.badge-success {
+  background: linear-gradient(135deg, #a7ffeb 0%, #64ffda 100%);
+  color: #00796b;
+}
+
+.badge-primary {
+  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+  color: #3730a3;
+}
+
+.badge-warning {
+  background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+  color: #9a3412;
+}
+
+/* Progress Ring */
+.progress-ring-circle {
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Stagger Children softly */
+.stagger-children>* {
+  opacity: 0;
+  animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.stagger-children>*:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.stagger-children>*:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.stagger-children>*:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.stagger-children>*:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  :root {
+    --radius: 24px;
+    --radius-lg: 32px;
+  }
+
+  .candy-card {
+    padding: 20px !important;
+  }
+}
