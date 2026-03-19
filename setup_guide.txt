@@ -1,0 +1,79 @@
+AMS-QR: VTU ATTENDANCE SYSTEM - SETUP GUIDE
+-------------------------------------------
+
+This project consists of three main components that work together:
+1. React Frontend (Vite + TailwindCSS)
+2. Python Face Recognition API (FastAPI + DeepFace)
+3. Node.js Auxiliary Server (Express)
+
+-------------------------------------------
+1. PREREQUISITES
+-------------------------------------------
+- Node.js (v18 or higher)
+- Python (v3.10 or higher recommended)
+- Git
+
+-------------------------------------------
+2. FRONTEND & NODE BACKEND (JavaScript)
+-------------------------------------------
+The frontend and node auxiliary server share the main package configuration.
+
+Main Dependencies:
+- Frontend: react, react-dom, react-router-dom, lucide-react, lottie-react, jsqr, qrcode
+- Node Backend: express, cors, morgan, dotenv, googleapis
+
+Installation:
+   Run the following in the root directory:
+   npm install
+
+-------------------------------------------
+3. PYTHON FACE API (Backend)
+-------------------------------------------
+The Python API handles face verification using DeepFace models.
+
+Required Packages:
+- fastapi
+- uvicorn[standard]
+- deepface
+- opencv-python
+- numpy
+- gspread
+- oauth2client
+- python-dotenv
+
+Installation:
+   Open your terminal and run:
+   pip install fastapi uvicorn deepface opencv-python numpy gspread oauth2client python-dotenv
+
+Note: On the first run, the system will download the 'Facenet512' model weights (approx. 100MB).
+
+-------------------------------------------
+4. ENVIRONMENT CONFIGURATION
+-------------------------------------------
+Create a '.env' file in the root directory 'SMART-main' with the following (sample):
+
+VITE_APPS_SCRIPT_URL=your_google_apps_script_url
+GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
+GOOGLE_CLIENT_EMAIL=your_service_account_email
+GOOGLE_PROJECT_ID=your_project_id
+GOOGLE_SHEET_NAME=attendence
+
+-------------------------------------------
+5. RUNNING THE APPLICATION
+-------------------------------------------
+You must run all three components simultaneously in separate terminals:
+
+1. Start Python Face API:
+   python api.py
+   (Listening on port 8000)
+
+2. Start Node Auxiliary Server:
+   node server.js
+   (Listening on port 8001)
+
+3. Start React Frontend:
+   npm run dev
+   (Listening on port 3005)
+
+Access the App: https://localhost:3005
+-------------------------------------------
