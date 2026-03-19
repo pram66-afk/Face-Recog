@@ -29,7 +29,7 @@ export async function login(userId: string, password: string): Promise<AuthUser>
     }
 
     const user = result.user as AuthUser;
-    sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+    localStorage.setItem(USER_KEY, JSON.stringify(user)); // FIXED: A2
     return user;
 }
 
@@ -48,11 +48,11 @@ export async function forgotPassword(email: string): Promise<void> {
 }
 
 export function logout(): void {
-    sessionStorage.removeItem(USER_KEY);
+    localStorage.removeItem(USER_KEY); // FIXED: A2
 }
 
 export function getCurrentUser(): AuthUser | null {
-    const stored = sessionStorage.getItem(USER_KEY);
+    const stored = localStorage.getItem(USER_KEY); // FIXED: A2
     if (!stored) return null;
     try {
         return JSON.parse(stored) as AuthUser;

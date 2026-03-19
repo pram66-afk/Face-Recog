@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* ============================================
    AMS QR — Candymorphism Design System
    Super-soft, glossy, and professional

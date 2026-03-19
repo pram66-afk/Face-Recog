@@ -8,9 +8,21 @@ export default defineConfig(({ mode }) => {
   const appsScriptUrl = env.VITE_APPS_SCRIPT_URL || process.env.VITE_APPS_SCRIPT_URL || '';
   return {
     server: {
-      port: 3000,
+      port: 3005,
       host: '0.0.0.0',
-      https: {},
+      proxy: {
+        '/api-python': {
+          target: 'https://localhost:8000',
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path) => path.replace(/^\/api-python/, ''),
+        },
+        '/api-node': {
+          target: 'http://localhost:8001',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api-node/, ''),
+        }
+      }
     },
     plugins: [
       react(),

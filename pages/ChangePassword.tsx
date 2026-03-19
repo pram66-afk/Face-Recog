@@ -93,12 +93,14 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ authUser }) => {
                         )}
 
                         <div className="space-y-2">
-                            <label className="block text-xs font-black text-slate-500 ml-4 uppercase tracking-[0.1em]">Current Password</label>
+                            <label htmlFor="oldPassword" title="Current Password" className="block text-xs font-black text-slate-500 ml-4 uppercase tracking-[0.1em]">Current Password</label>
                             <div className="relative group">
                                 <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none group-focus-within:text-indigo-500 transition-colors">
                                     <Lock className="h-5 w-5 text-slate-400 group-focus-within:text-indigo-500" />
                                 </div>
                                 <input
+                                    id="oldPassword"
+                                    name="oldPassword"
                                     type="password"
                                     value={oldPassword}
                                     onChange={(e) => setOldPassword(e.target.value)}
@@ -111,12 +113,14 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ authUser }) => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <label className="block text-xs font-black text-slate-500 ml-4 uppercase tracking-[0.1em]">New Password</label>
+                                <label htmlFor="newPassword" title="New Password" className="block text-xs font-black text-slate-500 ml-4 uppercase tracking-[0.1em]">New Password</label>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none group-focus-within:text-indigo-500 transition-colors">
                                         <Key className="h-5 w-5 text-slate-400 group-focus-within:text-indigo-500" />
                                     </div>
                                     <input
+                                        id="newPassword"
+                                        name="newPassword"
                                         type="password"
                                         value={newPassword}
                                         onChange={(e) => setNewPassword(e.target.value)}
@@ -128,12 +132,14 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ authUser }) => {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="block text-xs font-black text-slate-500 ml-4 uppercase tracking-[0.1em]">Confirm Password</label>
+                                <label htmlFor="confirmPassword" title="Confirm Password" className="block text-xs font-black text-slate-500 ml-4 uppercase tracking-[0.1em]">Confirm Password</label>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none group-focus-within:text-indigo-500 transition-colors">
                                         <CheckCircle2 className="h-5 w-5 text-slate-400 group-focus-within:text-indigo-500" />
                                     </div>
                                     <input
+                                        id="confirmPassword"
+                                        name="confirmPassword"
                                         type="password"
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}

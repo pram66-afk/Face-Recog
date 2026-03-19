@@ -5,9 +5,22 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend
 from datetime import datetime, timedelta
 import ipaddress
+import socket
 
-# Local IP
-IP_ADDR = "192.168.29.178"
+def get_local_ip():
+    """Auto-detect the local network IP address."""
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+        return ip
+    except:
+        return "127.0.0.1"
+
+# Auto-detect local IP
+IP_ADDR = get_local_ip()
+print(f"Detected local IP: {IP_ADDR}")
 
 key = rsa.generate_private_key(
     public_exponent=65537,
@@ -38,6 +51,7 @@ cert = x509.CertificateBuilder().subject_name(
 ).add_extension(
     x509.SubjectAlternativeName([
         x509.DNSName(u"localhost"),
+        x509.IPAddress(ipaddress.IPv4Address("127.0.0.1")),
         x509.IPAddress(ipaddress.IPv4Address(IP_ADDR)),
     ]),
     critical=False,
@@ -54,4 +68,7 @@ with open("key.pem", "wb") as f:
 with open("cert.pem", "wb") as f:
     f.write(cert.public_bytes(serialization.Encoding.PEM))
 
-print("Certificates generated: cert.pem, key.pem")
+print(f"Certificates generated: cert.pem, key.pem (for IP: {IP_ADDR})")
+print(f"\nAccess your app from Android at:")
+print(f"  https://{IP_ADDR}:3000")
+print(f"  (Accept the self-signed certificate warning in browser)")

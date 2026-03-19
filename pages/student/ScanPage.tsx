@@ -41,6 +41,7 @@ const ScanPage: React.FC<ScanPageProps> = ({ user, authUser }) => {
   const [debugInfo, setDebugInfo] = useState('');
   const isVerifyingRef = useRef(false);
   const isScanningRef = useRef(false);
+  const faceTimeoutRef = useRef<number | null>(null);
 
   // Cleanup camera on unmount
   useEffect(() => {
@@ -118,7 +119,7 @@ const ScanPage: React.FC<ScanPageProps> = ({ user, authUser }) => {
       canvas.width = video.videoWidth * scale;
       canvas.height = video.videoHeight * scale;
       
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
       if (!ctx) return;
       
       ctx.imageSmoothingEnabled = false;
@@ -155,21 +156,30 @@ const ScanPage: React.FC<ScanPageProps> = ({ user, authUser }) => {
       canvas.width = video.videoWidth * scale;
       canvas.height = video.videoHeight * scale;
       
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
       if (!ctx) return;
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       const base64Image = canvas.toDataURL('image/jpeg', 0.7);
 
       setFaceStatus('Verifying Identity...');
       const studentName = authUser?.name || user?.name || '';
-      if (!studentName) throw new Error("Student data missing.");
+      const studentUsn = authUser?.usn || authUser?.id || '';
       
-      console.log(`Sending face verification for ${studentName}...`);
-      const res = await verifyFace(base64Image, studentName);
+      if (!studentName || !studentUsn) {
+        throw new Error("Student identification (Name/USN) missing.");
+      }
+      
+      console.log(`Sending face verification for ${studentName} (${studentUsn})...`);
+      const res = await verifyFace(base64Image, studentName, studentUsn, activeSession?.sessionId);
+
+      // CRITICAL: Successfully got an API response, so we must stop the timeout timer!
+      if (faceTimeoutRef.current) {
+        clearTimeout(faceTimeoutRef.current);
+        faceTimeoutRef.current = null;
+      }
 
       if (res.status === 'success') {
         // --- SECURE MARKING ---
-        // Only mark in DB after face matches!
         if (apiReady && activeSession) {
           const markRes = await markAttendance({
             usn: authUser?.usn || authUser?.id || '',
@@ -193,8 +203,6 @@ const ScanPage: React.FC<ScanPageProps> = ({ user, authUser }) => {
         setResultMessage(markedSubjectName);
       } else {
         setFaceStatus(`Fail: ${res.reason || 'Not matched'}`);
-        // If it's a spoof or mismatch, we can keep looking or stop.
-        // Let's keep looking until timeout or user quits.
         if (res.reason === 'Spoof Detected') {
           setResultMessage('Spoof Attempt Detected!');
         }
@@ -214,7 +222,30 @@ const ScanPage: React.FC<ScanPageProps> = ({ user, authUser }) => {
 
   useEffect(() => {
     if (stage === 'CAMERA' || stage === 'FACE_VERIFY') startLiveCamera();
-  }, [stage]);
+
+    // Reset result state when moving away from RESULT stage
+    if (stage !== 'RESULT') {
+      setResult(null);
+    }
+
+    // Handle 10-second Face Verification Timeout
+    if (stage === 'FACE_VERIFY') {
+      faceTimeoutRef.current = window.setTimeout(() => {
+        // Only trigger if we are still verifying
+        setStage('RESULT');
+        setResult('FAIL_TIMEOUT');
+        setResultMessage('Face recognition timed out. No match found.');
+        stopCamera();
+      }, 10000);
+    }
+
+    return () => {
+      if (faceTimeoutRef.current) {
+        clearTimeout(faceTimeoutRef.current);
+        faceTimeoutRef.current = null;
+      }
+    };
+  }, [stage, stopCamera]);
 
   const handleAttendanceMarking = async (qrData: string) => {
     try {
@@ -350,9 +381,20 @@ const ScanPage: React.FC<ScanPageProps> = ({ user, authUser }) => {
               buttonText="Done" buttonAction={() => navigate('/student/dashboard')} />
           )}
 
-          {stage === 'RESULT' && (result === 'FAIL_INVALID_QR' || result === 'FAIL_ERROR') && (
-            <ResultCard icon={<XCircle className="w-8 h-8 text-red-600" />} title="Failed" accent="bg-red-100"
-              message={resultMessage} buttonText="Retry" buttonAction={() => { setStage('CAMERA'); startLiveCamera(); }} buttonStyle="bg-slate-800 text-white" />
+          {stage === 'RESULT' && result !== 'SUCCESS' && result !== null && (
+            <ResultCard 
+              icon={<XCircle className="w-8 h-8 text-red-600" />} 
+              title={result === 'FAIL_TIMEOUT' ? "Match not found" : "Failed"} 
+              accent="bg-red-100"
+              message={resultMessage} 
+              buttonText="Retry" 
+              buttonAction={() => { 
+                setStage('CAMERA'); 
+                setResult(null);
+                startLiveCamera(); 
+              }} 
+              buttonStyle="bg-slate-800 text-white" 
+            />
           )}
         </div>
       </div>

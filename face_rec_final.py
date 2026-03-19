@@ -28,7 +28,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 # ========================= CONFIG =========================
 TARGET_FOLDERS = ["Harini", "Thrisha", "Trupti", "Yash", "Pramath"]
 MODEL_NAME = "Facenet512"
-THRESHOLD = 0.40
+THRESHOLD = 0.45
 FRAME_SKIP = 2
 SESSION = "Morning"
 

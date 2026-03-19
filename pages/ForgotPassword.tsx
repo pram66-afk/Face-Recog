@@ -81,12 +81,14 @@ const ForgotPassword: React.FC = () => {
                         )}
 
                         <div className="space-y-2">
-                            <label className="block text-xs font-black text-slate-500 ml-4 uppercase tracking-[0.1em]">Email Address</label>
+                            <label htmlFor="email" className="block text-xs font-black text-slate-500 ml-4 uppercase tracking-[0.1em]">Email Address</label>
                             <div className="relative group">
                                 <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none group-focus-within:text-indigo-500 transition-colors">
                                     <Mail className="h-5 w-5 text-slate-400 group-focus-within:text-indigo-500" />
                                 </div>
                                 <input
+                                    id="email"
+                                    name="email"
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}

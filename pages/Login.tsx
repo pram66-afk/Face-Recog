@@ -170,12 +170,14 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
               <form onSubmit={handleLogin} className="space-y-6">
                 <div className="space-y-2">
-                  <label className="block text-xs font-black text-slate-500 ml-4 uppercase tracking-[0.1em]">Identity</label>
+                  <label htmlFor="userId" className="block text-xs font-black text-slate-500 ml-4 uppercase tracking-[0.1em]">Identity</label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none group-focus-within:text-indigo-500 transition-colors">
                       <UserCircle className="h-5 w-5 text-slate-400 group-focus-within:text-indigo-500" />
                     </div>
                     <input
+                      id="userId"
+                      name="userId"
                       type="text"
                       value={userId}
                       onChange={(e) => setUserId(e.target.value)}
@@ -188,7 +190,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
                 <div className="space-y-2">
                   <div className="flex items-center justify-between px-4">
-                    <label className="block text-xs font-black text-slate-500 uppercase tracking-[0.1em]">Security</label>
+                    <label htmlFor="password" className="block text-xs font-black text-slate-500 uppercase tracking-[0.1em]">Security</label>
                     <button
                       type="button"
                       onClick={() => navigate('/forgot-password')}
@@ -202,6 +204,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                       <Lock className="h-5 w-5 text-slate-400 group-focus-within:text-indigo-500" />
                     </div>
                     <input
+                      id="password"
+                      name="password"
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
