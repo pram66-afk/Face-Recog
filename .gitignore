@@ -1,0 +1,17 @@
+node_modules/
+.next/
+dist/
+.env*
+credentials.json
+*.pem
+*.pth
+*.pickle
+attendance.json
+attendance.csv
+__pycache__/
+.idea/
+build_log.txt
+key_extract.txt
+test_log.py
+debug_key.py
+/tmp/
